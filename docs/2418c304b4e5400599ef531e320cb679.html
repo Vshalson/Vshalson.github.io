@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Primary Meta Tags -->
+  <title>Vizlog</title>
+  <meta name="title" content="Vizlog">
+  <meta name="description" content="Collection of unusual experiments and Ethical hacking notes">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://vshalson.tech/">
+  <meta property="og:title" content="Vizlog">
+  <meta property="og:description" content="Collection of unusual experiments and Ethical hacking notes">
+  <meta property="og:image" content="">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="http://vshalson.tech/">
+  <meta property="twitter:title" content="Vizlog">
+  <meta property="twitter:description" content="Collection of unusual experiments and Ethical hacking notes">
+  <meta property="twitter:image" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Chrome, Firefox OS and Opera Status Bar Color -->
+  <meta name="theme-color" content="#FFFFFF">
+  <meta property="og:title" content="Useless Penetration Testing Cheatsheet">
+    <meta name="description" content="Cheatsheet of most used Linux Commands in Penetration Testing">
+  <meta property="og:description" content="Cheatsheet of most used Linux Commands in Penetration Testing">
+    <!-- following viz change -->
+    <meta property="og:type" content="blog">
+  <title>Useless Penetration Testing Cheatsheet</title>
+  <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb71620e3-c96f-4528-8d97-b288c190e643%2FRengoku_kyoujurou_(kimetsu_no_yaiba).jpeg?table=collection&id=59e00ea3-c06b-463c-8165-ad7448059625">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.19.0/themes/prism.min.css">
+  <link rel="stylesheet" type="text/css" href="css/SourceSansPro.css">
+  <link rel="stylesheet" type="text/css" href="css/notablog.css">
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
+  <style>
+    :root {
+      font-size: 18px;
+    }
+
+    .DateTagBar {
+      margin-top: 1.0rem;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="Navbar">
+    <a href="index.html">
+      <div class="Navbar__Btn"><span><img class="inline-img-icon" src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb71620e3-c96f-4528-8d97-b288c190e643%2FRengoku_kyoujurou_(kimetsu_no_yaiba).jpeg?table=collection&id=59e00ea3-c06b-463c-8165-ad7448059625"></span> <span>Home</span></div>
+    </a>
+                    <span class="Navbar__Delim">&centerdot;</span>
+    <a href="about.html">
+      <div class="Navbar__Btn"><span><img class="inline-img-icon" src="https://www.notion.so/signed/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fb0876588-8392-4afd-88f2-2b79f1fa471b%2FTwitter.jpeg?table=block&id=8b7e8994-2179-42f6-99c0-c6d968b07ea5"></span> <span>You don't know me?</span></div>
+    </a>
+                                                                                                                                                          </nav>
+  <header class="Header">
+          <div class="Header__Spacer Header__Spacer--NoCover">
+    </div>
+        <div class="Header__Icon"><span>⛅</span></div>
+        <h1 class="Header__Title">Useless Penetration Testing Cheatsheet</h1>
+            <div class="DateTagBar">
+                          <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--brown">
+            <a href="tag/Hacking.html">Hacking</a>
+          </span>
+                <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--green">
+            <a href="tag/Unusual Experiment.html">Unusual Experiment</a>
+          </span>
+                <span class="DateTagBar__Item DateTagBar__Tag DateTagBar__Tag--pink">
+            <a href="tag/Automation.html">Automation</a>
+          </span>
+                  </div>
+          </header>
+      <article id="https://www.notion.so/2418c304b4e5400599ef531e320cb679" class="PageRoot"><div id="https://www.notion.so/2195f9af376d4d2b9d4b1a9299ca7de9" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString">Cheatsheet of most used Linux Commands in Pentesting</span></span></p></div><h2 id="https://www.notion.so/84d0978a6f414cf6a03dd56aeeefe2d6" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/84d0978a6f414cf6a03dd56aeeefe2d6"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">SSH Cheatsheet</span></span></h2><div id="https://www.notion.so/7da70f162af6445dadbc32f13c648d76" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="https://www.notion.so/f407bfd010fe476daa3171f6468baaa8"><span class="SemanticStringArray"><span class="SemanticString">SSH CheatSheet</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/eb914e947e8e4b18bc2bc874d7c94733" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/eb914e947e8e4b18bc2bc874d7c94733"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Organic HTTP File Transfer</span></span></h2><div id="https://www.notion.so/146b594399c145758f35f703a0b3cc8a" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="https://www.notion.so/c0f0be797b834b16bf59f3f63102b2ca"><span class="SemanticStringArray"><span class="SemanticString">Organic HTTP File Transfer</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/41eb847562014e7cac796283685c8a4b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/41eb847562014e7cac796283685c8a4b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Network Pivoting Technique</span></span></h2><div id="https://www.notion.so/c30952cbfbda40f6a9a39f9a5bafb460" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="https://www.notion.so/35276cfc85334d9b9fa6135458dc2a79"><span class="SemanticStringArray"><span class="SemanticString">Network Pivoting Techniques</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/0d5163dc4bb141b084a505d70f750773" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/0d5163dc4bb141b084a505d70f750773"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Ncat Cheatsheet</span></span></h2><div id="https://www.notion.so/218315a54fca46cd9cd910c0363c975b" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="https://www.notion.so/1aefd6242a41467e8de482347ee68562"><span class="SemanticStringArray"><span class="SemanticString">Ncat Cheatsheet</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/5f588335b8274dcd9dcc1dc9bab82d1b" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/5f588335b8274dcd9dcc1dc9bab82d1b"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Curl Cheatsheet</span></span></h2><div id="https://www.notion.so/767651fa599c4385ad713ebd028440b1" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href=""><span class="SemanticStringArray"><span class="SemanticString">Unknown Page</span></span></a></span></span><span class="SemanticString"> </span></span></p></div><h2 id="https://www.notion.so/87383997cc544e4e9677700852ba6696" class="ColorfulBlock ColorfulBlock--ColorDefault Heading Heading--2"><a class="Anchor" href="#https://www.notion.so/87383997cc544e4e9677700852ba6696"><svg width="16" height="16" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><span class="SemanticStringArray"><span class="SemanticString">Docker Cheatsheet</span></span></h2><div id="https://www.notion.so/4a6d3b24f7ec47c0a84af12e41164135" class="ColorfulBlock ColorfulBlock--ColorDefault Text"><p class="Text__Content"><span class="SemanticStringArray"><span class="SemanticString"><span class="SemanticString__Fragment SemanticString__Fragment--Resource"><a href="https://www.notion.so/863a20a454de44ac8b3bbc10439935fa"><span class="SemanticStringArray"><span class="SemanticString">Docker</span></span></a></span></span><span class="SemanticString"> </span></span></p></div></article>  <footer class="Footer">
+        <div>&copy; Vizlog 2021</div>
+        <div>&centerdot;</div>
+        <div>Powered by <a href="https://github.com/dragonman225/notablog" target="_blank"
+            rel="noopener noreferrer">Notablog</a>.
+        </div>
+    </footer>
+</body>
+
+</html>
